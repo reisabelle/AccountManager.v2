@@ -51,10 +51,19 @@ class add_account : AppCompatActivity() {
             val phone = binding.phoneNo.text.toString().trim()
             val password = binding.accPassword.text.toString().trim()
 
-            database = FirebaseDatabase.getInstance().getReference("Accounts")
-
-            val account = Account_Data(platform, link, email, phone, password)
-            database.child("platform").setValue(account)
+            database = FirebaseDatabase.getInstance().reference
+            if (platform.isEmpty() || link.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } else {
+                val account = hashMapOf(
+                    "platform" to platform,
+                    "link" to link,
+                    "email" to email,
+                    "phoneNo" to phone,
+                    "password" to password
+                )
+            database.child("Accounts").push().setValue(account)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Data Saved!", Toast.LENGTH_SHORT).show()
 
