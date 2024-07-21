@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "272197513423",
+    "project_id": "account-manager-6f904",
+    "storage_bucket": "account-manager-6f904.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272197513423:android:6ad3c3ad1c90eecdfe47ba",
+        "android_client_info": {
+          "package_name": "com.example.accountmanager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAs5yrpzp7-CCLm7M56fr5nZfC_l3RaCkI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
