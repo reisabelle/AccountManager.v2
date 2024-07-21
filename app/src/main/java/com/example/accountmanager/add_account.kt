@@ -63,7 +63,7 @@ class add_account : AppCompatActivity() {
                     "phoneNo" to phone,
                     "password" to password
                 )
-            database.child("Accounts").push().setValue(account)
+            database.child("Accounts").child(platform).setValue(account)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Data Saved!", Toast.LENGTH_SHORT).show()
 
