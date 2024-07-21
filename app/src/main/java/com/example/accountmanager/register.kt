@@ -95,7 +95,7 @@ class register : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     user?.let {
-                        val userId = it.uid
+                        val userId = username
                         val userMap = mapOf(
                             "username" to username,
                             "email" to email,
