@@ -16,13 +16,7 @@
             android:name=".Accounts"
             android:exported="false" />
         <activity
-            android:name=".registered"
-            android:exported="false" />
-        <activity
             android:name=".add_account"
-            android:exported="false" />
-        <activity
-            android:name=".accValidation"
             android:exported="false" />
         <activity
             android:name=".info"
@@ -34,13 +28,7 @@
             android:name=".passConfirmation"
             android:exported="false" />
         <activity
-            android:name=".ListToBeValidated"
-            android:exported="false" />
-        <activity
             android:name=".panel"
-            android:exported="false" />
-        <activity
-            android:name=".admin"
             android:exported="false" />
         <activity
             android:name=".home"
