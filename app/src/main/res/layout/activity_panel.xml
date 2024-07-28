@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView"
+        android:id="@+id/profile"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_marginStart="40dp"
@@ -31,7 +31,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/name"
         android:layout_width="121dp"
         android:layout_height="26dp"
         android:layout_marginStart="40dp"
@@ -39,10 +39,10 @@
         android:hint="Name"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/profile" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/email"
         android:layout_width="167dp"
         android:layout_height="22dp"
         android:layout_marginTop="4dp"
@@ -51,7 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.163"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/name" />
 
 
     <Button

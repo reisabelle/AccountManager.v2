@@ -3,48 +3,58 @@ package com.example.accountmanager
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import androidx.activity.enableEdgeToEdge
-import com.example.accountmanager.MainActivity
-import com.example.accountmanager.R
-import com.example.accountmanager.login
-import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class register : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
+    private lateinit var storage: FirebaseStorage
+    private lateinit var storageRef: StorageReference
 
     private lateinit var button: FloatingActionButton
     private lateinit var imageview: ImageView
+    private var imageUri: Uri? = null
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_register)
 
-        // for Adding a profile picture
+        // Initialize Firebase Auth and Database
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
+        storage = FirebaseStorage.getInstance()
+        storageRef = storage.reference.child("profile_images")
+
+        // For Adding a profile picture
         imageview = findViewById(R.id.profile)
         button = findViewById(R.id.camera)
 
         button.setBackgroundColor(Color.TRANSPARENT)
         button.setOnClickListener {
             ImagePicker.with(this)
-                .crop()	    			//Crop image(Optional), Check Customization for more option
-                .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .crop() // Crop image(Optional), Check Customization for more option
+                .compress(1024) // Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080) // Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
         }
 
@@ -59,9 +69,6 @@ class register : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-
-        auth = FirebaseAuth.getInstance()
-        database = FirebaseDatabase.getInstance().reference
 
         val reg: Button = findViewById(R.id.Regbtn)
         val phoneEditText: EditText = findViewById(R.id.phone)
@@ -79,26 +86,60 @@ class register : AppCompatActivity() {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             } else {
-                registerUser(username, email, phone, password)
+                if (imageUri != null) {
+                    uploadImageAndRegisterUser(username, email, phone, password, imageUri!!)
+                } else {
+                    Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        imageview.setImageURI(data?. data)
+        if (resultCode == RESULT_OK && data != null) {
+            imageUri = data.data
+            imageview.setImageURI(imageUri)
+            Log.d("ImagePicker", "Image selected: $imageUri")
+        } else {
+            Toast.makeText(this, "Image selection failed", Toast.LENGTH_SHORT).show()
+            Log.e("ImagePicker", "Image selection failed: resultCode=$resultCode, data=$data")
+        }
     }
 
-    private fun registerUser(username: String, email: String, phone: String, password: String) {
+    private fun uploadImageAndRegisterUser(username: String, email: String, phone: String, password: String, imageUri: Uri) {
+        Log.d("UploadImage", "Starting image upload: $imageUri")
+        val fileRef = storageRef.child("$username.jpg")
+        fileRef.putFile(imageUri)
+            .addOnSuccessListener {
+                Log.d("UploadImage", "Image uploaded successfully")
+                fileRef.downloadUrl.addOnSuccessListener { uri ->
+                    val imageUrl = uri.toString()
+                    Log.d("UploadImage", "Image URL obtained: $imageUrl")
+                    registerUser(username, email, phone, password, imageUrl)
+                }.addOnFailureListener { e ->
+                    Log.e("UploadImage", "Failed to get download URL: ${e.message}")
+                    Toast.makeText(this, "Failed to get download URL: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("UploadImage", "Image upload failed: ${e.message}")
+                Toast.makeText(this, "Image upload failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun registerUser(username: String, email: String, phone: String, password: String, imageUrl: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     user?.let {
-                        val userId = username
+                        val userId = it.uid
                         val userMap = mapOf(
                             "username" to username,
                             "email" to email,
-                            "phone" to phone
+                            "phone" to phone,
+                            "imageUrl" to imageUrl
                         )
 
                         database.child("users").child(userId).setValue(userMap)
@@ -109,12 +150,14 @@ class register : AppCompatActivity() {
                                     startActivity(intent)
                                     finish()
                                 } else {
+                                    Log.e("DatabaseError", "Database Error: ${dbTask.exception?.message}")
                                     Toast.makeText(this, "Database Error: ${dbTask.exception?.message}", Toast.LENGTH_SHORT).show()
                                     dbTask.exception?.printStackTrace()
                                 }
                             }
                     }
                 } else {
+                    Log.e("AuthError", "Authentication Failed: ${task.exception?.message}")
                     Toast.makeText(this, "Authentication Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     task.exception?.printStackTrace()
                 }
