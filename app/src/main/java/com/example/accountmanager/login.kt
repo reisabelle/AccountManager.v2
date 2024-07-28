@@ -25,12 +25,6 @@ class login : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = Firebase.auth
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
         val backBtn1: ImageView = findViewById(R.id.backbtn1)
         backBtn1.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -48,9 +42,6 @@ class login : AppCompatActivity() {
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            } else if (email == "admin" && password == "123") {
-                val intent = Intent(this, Admin::class.java)
-                startActivity(intent)
             } else {
                 signInWithEmailAndPassword(email, password)
             }
@@ -61,7 +52,11 @@ class login : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    val password = password
                     val intent = Intent(this, home::class.java)
+                    //pass the email & password value to home
+                    intent.putExtra("PASSWORD_KEY", password)
+                    intent.putExtra("EMAIL_KEY", email)
                     startActivity(intent)
                     finish()
                 } else {
