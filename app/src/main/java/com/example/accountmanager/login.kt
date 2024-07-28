@@ -1,6 +1,7 @@
 package com.example.accountmanager
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -10,20 +11,26 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.accountmanager.databinding.ActivityPanelBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+
 class login : AppCompatActivity() {
     
     private lateinit var auth: FirebaseAuth
+    lateinit var binding: ActivityPanelBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+
         // Initialize Firebase Auth
         auth = Firebase.auth
+
+
 
         val backBtn1: ImageView = findViewById(R.id.backbtn1)
         backBtn1.setOnClickListener {
@@ -39,12 +46,16 @@ class login : AppCompatActivity() {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
+
             if (email.isEmpty() || password.isEmpty()) {
+
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             } else {
                 signInWithEmailAndPassword(email, password)
+
             }
+
         }
     }
 
@@ -52,11 +63,13 @@ class login : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+
                     val password = password
                     val intent = Intent(this, home::class.java)
                     //pass the email & password value to home
                     intent.putExtra("PASSWORD_KEY", password)
                     intent.putExtra("EMAIL_KEY", email)
+
                     startActivity(intent)
                     finish()
                 } else {
@@ -64,4 +77,5 @@ class login : AppCompatActivity() {
                 }
             }
     }
+
 }
