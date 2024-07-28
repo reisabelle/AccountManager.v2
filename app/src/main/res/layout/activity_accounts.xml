@@ -22,21 +22,6 @@
         app:titleMarginStart="115dp"
         app:titleTextColor="#FFFFFF" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="413dp"
-        android:layout_height="450dp"
-        android:layout_marginTop="5dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_toolbar">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="500dp" />
-    </LinearLayout>
-
     <ImageView
         android:id="@+id/backbtn"
         android:layout_width="42dp"
@@ -51,11 +36,21 @@
         android:id="@+id/addbtn"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_marginTop="104dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:background="#9568E4"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
         app:srcCompat="@drawable/baseline_add_24" />
+
+    <ListView
+        android:id="@+id/LV_acc"
+        android:layout_width="match_parent"
+        android:layout_height="580dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_toolbar"
+        tools:listitem="@layout/item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
