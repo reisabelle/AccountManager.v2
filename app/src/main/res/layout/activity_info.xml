@@ -32,15 +32,16 @@
         app:srcCompat="@drawable/baseline_arrow_back_24"
         tools:ignore="MissingConstraints" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="417dp"
-        android:layout_height="577dp"
-        android:layout_marginTop="9dp"
-        android:layout_marginBottom="9dp"
+    <ListView
+        android:id="@+id/LV_info"
+        android:layout_width="match_parent"
+        android:layout_height="665dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialToolbar2" />
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbar2"
+        tools:layout_editor_absoluteX="1dp"
+        tools:listitem="@layout/item"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
