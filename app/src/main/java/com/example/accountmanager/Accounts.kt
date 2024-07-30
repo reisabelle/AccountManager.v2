@@ -2,7 +2,9 @@ package com.example.accountmanager
 
 import Adapter
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +22,6 @@ class Accounts : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_accounts)
-
 
         val originalPassword = intent.getStringExtra("PASSWORD_KEY")
         val originalEmail = intent.getStringExtra("EMAIL_KEY")
@@ -46,6 +47,22 @@ class Accounts : AppCompatActivity() {
         listView.adapter = adapter
 
         fetchAccountsData()
+
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val account = adapter.getItem(position) as Account_Model
+            Log.d("AccountsActivity", "Item clicked: ${account.platform}, ${account.link}")
+
+            if (account.link.isNotEmpty()) {
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(account.link))
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Log.e("AccountsActivity", "Error opening URL: ${account.link}", e)
+                }
+            } else {
+                Log.w("AccountsActivity", "Empty link for platform: ${account.platform}")
+            }
+        }
     }
 
     private fun fetchAccountsData() {
@@ -54,13 +71,16 @@ class Accounts : AppCompatActivity() {
                 val accounts = mutableListOf<Account_Model>()
                 for (accountSnapshot in snapshot.children) {
                     val account = accountSnapshot.getValue(Account_Model::class.java)
-                    account?.let { accounts.add(it) }
+                    account?.let {
+                        Log.d("AccountsActivity", "Fetched account: ${it.platform}, ${it.link}")
+                        accounts.add(it)
+                    }
                 }
                 adapter.updateData(accounts)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Handle the error here
+                Log.e("AccountsActivity", "Database error: ${error.message}", error.toException())
             }
         })
     }
