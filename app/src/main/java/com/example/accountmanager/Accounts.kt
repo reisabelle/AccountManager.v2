@@ -10,10 +10,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import link_Adapter
 
 class Accounts : AppCompatActivity() {
     private lateinit var listView: ListView
-    private lateinit var adapter: Adapter
+    private lateinit var adapter: link_Adapter
     private val database = FirebaseDatabase.getInstance()
     private val accountsRef = database.getReference("Accounts")
 
@@ -41,8 +42,8 @@ class Accounts : AppCompatActivity() {
             startActivity(intent)
         }
 
-        listView = findViewById(R.id.LV_acc)
-        adapter = Adapter(this, mutableListOf())
+        listView = findViewById(R.id.LV_link)
+        adapter = link_Adapter(this, mutableListOf())
         listView.adapter = adapter
 
         fetchAccountsData()
