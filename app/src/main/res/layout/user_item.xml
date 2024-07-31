@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_image"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/baseline_account_circle_24" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="295dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="9dp"
+            android:layout_toEndOf="@+id/user_image"
+            android:hint="Username"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="295dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="9dp"
+            android:layout_toEndOf="@+id/user_image"
+            android:hint="Email"
+            android:textSize="16sp"
+            android:layout_below="@id/username"/>
+
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="295dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="9dp"
+            android:layout_toEndOf="@+id/user_image"
+            android:hint="Phone No."
+            android:textSize="16sp"
+            android:layout_below="@id/email"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
