@@ -62,7 +62,7 @@ class add_account : AppCompatActivity() {
                     "password" to password,
                     "userEmail" to userEmail // added this para sa pagdisplay ng data, hindi maisali yung added accounts ng ibang user. pero di ko pa nagagwa
                 )
-                database.child("Accounts").child(platform).setValue(account)
+                database.child("Accounts").push().setValue(account)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Data Saved!", Toast.LENGTH_SHORT).show()
 
