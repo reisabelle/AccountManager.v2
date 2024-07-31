@@ -1,21 +1,22 @@
 package com.example.accountmanager
 
-import Adapter
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.accountmanager.ModelClassess.Account_Model
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import link_Adapter
 
 class Accounts : AppCompatActivity() {
     private lateinit var listView: ListView
-    private lateinit var adapter: Adapter
+    private lateinit var adapter: link_Adapter
     private val database = FirebaseDatabase.getInstance()
     private val accountsRef = database.getReference("Accounts")
 
@@ -42,45 +43,52 @@ class Accounts : AppCompatActivity() {
             startActivity(intent)
         }
 
-        listView = findViewById(R.id.LV_acc)
-        adapter = Adapter(this, mutableListOf())
+        listView = findViewById(R.id.LV_link)
+        adapter = link_Adapter(this, mutableListOf())
         listView.adapter = adapter
 
-        fetchAccountsData()
+        if (originalEmail != null) {
+            val userEmail = originalEmail
+            fetchAccountsData(userEmail)
+        }
 
-        listView.setOnItemClickListener { _, _, position, _ ->
+        listView.setOnItemClickListener { _, view, position, _ ->
             val account = adapter.getItem(position) as Account_Model
-            Log.d("AccountsActivity", "Item clicked: ${account.platform}, ${account.link}")
+            val link = account.link
 
-            if (account.link.isNotEmpty()) {
-                try {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(account.link))
-                    startActivity(intent)
-                } catch (e: Exception) {
-                    Log.e("AccountsActivity", "Error opening URL: ${account.link}", e)
-                }
+            // Check if link is empty
+            if (link.isEmpty()) {
+                Toast.makeText(this, "Invalid Link", Toast.LENGTH_SHORT).show()
+                return@setOnItemClickListener
+            }
+
+            // Check if link starts with "http" (already existing check)
+            if (link.isNotEmpty() && link.startsWith("http")) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                startActivity(intent)
             } else {
-                Log.w("AccountsActivity", "Empty link for platform: ${account.platform}")
+                // Handle link without "http" prefix (e.g., facebook.com, tiktok.com)
+                val completeUrl = "https://$link" // Add "https://" prefix
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(completeUrl))
+                startActivity(intent)
             }
         }
     }
 
-    private fun fetchAccountsData() {
-        accountsRef.addValueEventListener(object : ValueEventListener {
+    private fun fetchAccountsData(userEmail: String) {
+        val userAccountsRef = accountsRef.orderByChild("userEmail").equalTo(userEmail)
+        userAccountsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val accounts = mutableListOf<Account_Model>()
                 for (accountSnapshot in snapshot.children) {
                     val account = accountSnapshot.getValue(Account_Model::class.java)
-                    account?.let {
-                        Log.d("AccountsActivity", "Fetched account: ${it.platform}, ${it.link}")
-                        accounts.add(it)
-                    }
+                    account?.let { accounts.add(it) }
                 }
                 adapter.updateData(accounts)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e("AccountsActivity", "Database error: ${error.message}", error.toException())
+                // Handle the error here
             }
         })
     }
