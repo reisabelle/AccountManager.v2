@@ -26,15 +26,18 @@ class login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-
         // Initialize Firebase Auth
         auth = Firebase.auth
-
-
 
         val backBtn1: ImageView = findViewById(R.id.backbtn1)
         backBtn1.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        val adminLogbtn: Chip = findViewById(R.id.adminLogbtn)
+        adminLogbtn.setOnClickListener {
+            val intent = Intent(this, adminLog::class.java)
             startActivity(intent)
         }
 
