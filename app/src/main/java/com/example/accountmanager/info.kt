@@ -39,10 +39,14 @@ class info : AppCompatActivity() {
         adapter = Adapter(this, mutableListOf())
         listView.adapter = adapter
 
-        fetchAccountsData()
+        if (originalEmail != null) {
+            val userEmail = originalEmail
+            fetchAccountsData(userEmail)
+        }
     }
-    private fun fetchAccountsData() {
-        accountsRef.addValueEventListener(object : ValueEventListener {
+    private fun fetchAccountsData(userEmail: String) {
+        val userAccountsRef = accountsRef.orderByChild("userEmail").equalTo(userEmail)
+        userAccountsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val accounts = mutableListOf<Account_Model>()
                 for (accountSnapshot in snapshot.children) {
