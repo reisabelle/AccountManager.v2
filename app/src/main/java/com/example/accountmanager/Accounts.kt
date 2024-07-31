@@ -47,6 +47,28 @@ class Accounts : AppCompatActivity() {
         listView.adapter = adapter
 
         fetchAccountsData()
+
+        listView.setOnItemClickListener { _, view, position, _ ->
+            val account = adapter.getItem(position) as Account_Model
+            val link = account.link
+
+            // Check if link is empty
+            if (link.isEmpty()) {
+                Toast.makeText(this, "Invalid Link", Toast.LENGTH_SHORT).show()
+                return@setOnItemClickListener
+            }
+
+            // Check if link starts with "http" (already existing check)
+            if (link.isNotEmpty() && link.startsWith("http")) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                startActivity(intent)
+            } else {
+                // Handle link without "http" prefix (e.g., facebook.com, tiktok.com)
+                val completeUrl = "https://$link" // Add "https://" prefix
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(completeUrl))
+                startActivity(intent)
+            }
+        }
     }
 
     private fun fetchAccountsData() {
