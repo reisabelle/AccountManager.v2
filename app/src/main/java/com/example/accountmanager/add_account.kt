@@ -24,7 +24,6 @@ class add_account : AppCompatActivity() {
     private lateinit var binding: ActivityAddAccountBinding
     private lateinit var database: DatabaseReference
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -68,6 +67,8 @@ class add_account : AppCompatActivity() {
                         Toast.makeText(this, "Data Saved!", Toast.LENGTH_SHORT).show()
 
                         val intent = Intent(this, Accounts::class.java)
+                        intent.putExtra("PASSWORD_KEY", originalPassword)
+                        intent.putExtra("EMAIL_KEY", originalEmail)
                         startActivity(intent)
                         finish()
                     }
