@@ -21,5 +21,23 @@ class Admin : AppCompatActivity() {
             val intent = Intent(this, toValidate::class.java)
             startActivity(intent)
         }
+
+         val toolbar = findViewById<MaterialToolbar>(R.id.materialToolbar2)
+        setSupportActionBar(toolbar)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_logout -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
     }
 }
