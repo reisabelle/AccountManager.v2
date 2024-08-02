@@ -20,6 +20,12 @@ class validation : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_validation)
 
+        val backbtn = findViewById<ImageView>(R.id.backbtn7)
+        backbtn.setOnClickListener{
+            val intent = Intent(this, Admin::class.java)
+            startActivity(intent)
+        }
+
         accountsRef = FirebaseDatabase.getInstance().getReference("users")
 
         val emailData = intent.getStringExtra("email")
