@@ -37,7 +37,7 @@ class registeredUser : AppCompatActivity() {
 
         listView.setOnItemClickListener { parent, view, position, id ->
             val selectedUser = adapter.getItem(position) as Users
-            val intent = Intent(this, validation::class.java)
+            val intent = Intent(this, Validation::class.java)
             // Pass user data to validation activity using Intent extras
             intent.putExtra("email", selectedUser.email)
             startActivity(intent)

@@ -1,4 +1,4 @@
-package com.example.accountmanager
+package com.example.accountmanager.ModelClassess
 
 class Account_Model(
     val platform: String = "",

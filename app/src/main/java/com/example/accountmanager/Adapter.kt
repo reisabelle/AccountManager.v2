@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.accountmanager.Account_Model
+import com.example.accountmanager.ModelClassess.Account_Model
 import com.example.accountmanager.R
 
 class Adapter(private val context: Context, private var dataSource: List<Account_Model>) : BaseAdapter() {

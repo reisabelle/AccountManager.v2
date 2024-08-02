@@ -50,6 +50,7 @@ class panel : AppCompatActivity() {
         val button3: Button = findViewById(R.id.logoutbtn)
         button3.setBackgroundColor(Color.TRANSPARENT)
         button3.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

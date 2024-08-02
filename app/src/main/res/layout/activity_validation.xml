@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".validation">
+    tools:context=".Validation">
 
 
     <LinearLayout
@@ -94,20 +94,26 @@
         <Button
             android:id="@+id/deletebtn"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginStart="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
             android:text="Delete"
-            tools:layout_editor_absoluteX="100dp"
-            tools:layout_editor_absoluteY="506dp" />
+             />
 
         <Button
             android:id="@+id/disablebtn"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginStart="225dp"
-            android:text="Disable"
-            tools:layout_editor_absoluteX="228dp"
-            tools:layout_editor_absoluteY="506dp" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="265dp"
+            android:text="Disable" />
+
+        <Button
+            android:id="@+id/enablebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="160dp"
+            android:text="Enable" />
+
+
     </FrameLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView

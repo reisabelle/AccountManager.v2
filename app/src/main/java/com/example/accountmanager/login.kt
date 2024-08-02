@@ -2,6 +2,7 @@ package com.example.accountmanager
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -10,6 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.chip.Chip
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 
 
@@ -61,19 +66,46 @@ class login : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-
-                    val password = password
-                    val intent = Intent(this, home::class.java)
-                    //pass the email & password value to home
-                    intent.putExtra("PASSWORD_KEY", password)
-                    intent.putExtra("EMAIL_KEY", email)
-
-                    startActivity(intent)
-                    finish()
+                    val user = auth.currentUser
+                    user?.let {
+                        checkUserStatus(it.uid) { isDisabled ->
+                            if (isDisabled) {
+                                // User is disabled, sign them out and show a message
+                                auth.signOut()
+                                Toast.makeText(this, "Your account has been disabled", Toast.LENGTH_SHORT).show()
+                            } else {
+                                // User is not disabled, proceed to the next activity
+                                val intent = Intent(this, home::class.java)
+                                // Pass the email & password value to home
+                                intent.putExtra("PASSWORD_KEY", password)
+                                intent.putExtra("EMAIL_KEY", email)
+                                startActivity(intent)
+                                finish()
+                            }
+                        }
+                    } ?: run {
+                        // Handle the case where user is null
+                        Toast.makeText(baseContext, "User not found", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(baseContext, "Authentication failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
+    private fun checkUserStatus(uid: String, callback: (Boolean) -> Unit) {
+        val userRef = FirebaseDatabase.getInstance().getReference("users").child(uid)
+        userRef.child("disabled").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val isDisabled = dataSnapshot.getValue(Boolean::class.java) ?: false
+                callback(isDisabled)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("CheckUserStatus", "Database error: ${error.message}")
+                callback(true) // Default to disabled if there is an error
+            }
+        })
+    }
+
 
 }
