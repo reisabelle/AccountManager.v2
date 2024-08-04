@@ -68,24 +68,26 @@ class login : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     user?.let {
-                        checkUserStatus(it.uid) { isDisabled ->
-                            if (isDisabled) {
-                                // User is disabled, sign them out and show a message
-                                auth.signOut()
-                                Toast.makeText(this, "Your account has been disabled", Toast.LENGTH_SHORT).show()
-                            } else {
-                                // User is not disabled, proceed to the next activity
-                                val intent = Intent(this, home::class.java)
-                                // Pass the email & password value to home
-                                intent.putExtra("PASSWORD_KEY", password)
-                                intent.putExtra("EMAIL_KEY", email)
-                                startActivity(intent)
-                                finish()
+                        if (it.isEmailVerified) {
+                            // Check if the user is disabled
+                            checkUserStatus(it.uid) { isDisabled ->
+                                if (isDisabled) {
+                                    // User is disabled, sign them out and show a message
+                                    auth.signOut()
+                                    Toast.makeText(this, "Your account has been disabled", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    // User is not disabled, proceed to the next activity
+                                    val intent = Intent(this, home::class.java).apply {
+                                        putExtra("EMAIL_KEY", email)
+                                        putExtra("PASSWORD_KEY", password)
+                                    }
+                                    startActivity(intent)
+                                    finish()
+                                }
                             }
+                        } else {
+                            Toast.makeText(this, "Please verify your email address before logging in.", Toast.LENGTH_SHORT).show()
                         }
-                    } ?: run {
-                        // Handle the case where user is null
-                        Toast.makeText(baseContext, "User not found", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     Toast.makeText(baseContext, "Authentication failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()

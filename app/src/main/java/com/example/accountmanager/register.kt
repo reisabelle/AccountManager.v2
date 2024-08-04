@@ -134,25 +134,34 @@ class register : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     user?.let {
-                        val userId = it.uid
-                        val userMap = mapOf(
-                            "username" to username,
-                            "email" to email,
-                            "phone" to phone,
-                            "imageUrl" to imageUrl
-                        )
+                        it.sendEmailVerification()
+                            .addOnCompleteListener { emailTask ->
+                                if (emailTask.isSuccessful) {
+                                    val userId = it.uid
+                                    val userMap = mapOf(
+                                        "username" to username,
+                                        "email" to email,
+                                        "phone" to phone,
+                                        "imageUrl" to imageUrl,
+                                        "isEmailVerified" to false // To track email verification status
+                                    )
 
-                        database.child("users").child(userId).setValue(userMap)
-                            .addOnCompleteListener { dbTask ->
-                                if (dbTask.isSuccessful) {
-                                    Toast.makeText(this, "Registration Successful", Toast.LENGTH_SHORT).show()
-                                    val intent = Intent(this, login::class.java)
-                                    startActivity(intent)
-                                    finish()
+                                    database.child("users").child(userId).setValue(userMap)
+                                        .addOnCompleteListener { dbTask ->
+                                            if (dbTask.isSuccessful) {
+                                                Toast.makeText(this, "Registration Successful. Please check your email for verification.", Toast.LENGTH_SHORT).show()
+                                                val intent = Intent(this, login::class.java)
+                                                startActivity(intent)
+                                                finish()
+                                            } else {
+                                                Log.e("DatabaseError", "Database Error: ${dbTask.exception?.message}")
+                                                Toast.makeText(this, "Database Error: ${dbTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                                                dbTask.exception?.printStackTrace()
+                                            }
+                                        }
                                 } else {
-                                    Log.e("DatabaseError", "Database Error: ${dbTask.exception?.message}")
-                                    Toast.makeText(this, "Database Error: ${dbTask.exception?.message}", Toast.LENGTH_SHORT).show()
-                                    dbTask.exception?.printStackTrace()
+                                    Log.e("EmailError", "Email Verification Failed: ${emailTask.exception?.message}")
+                                    Toast.makeText(this, "Failed to send verification email: ${emailTask.exception?.message}", Toast.LENGTH_SHORT).show()
                                 }
                             }
                     }

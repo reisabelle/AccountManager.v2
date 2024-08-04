@@ -213,4 +213,6 @@ class Validation : AppCompatActivity() {
             Log.d("DisableUser", "Email data is null")
         }
     }
+
+
 }
