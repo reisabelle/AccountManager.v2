@@ -28,6 +28,14 @@ class home : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val record: Button = findViewById(R.id.recordbtn)
+        record.setOnClickListener() {
+            val intent = Intent(this, academic_records::class.java)
+            intent.putExtra("PASSWORD_KEY", originalPassword)
+            intent.putExtra("EMAIL_KEY", originalEmail)
+            startActivity(intent)
+        }
+
         val menu: ImageView = findViewById(R.id.menu)
         menu.setOnClickListener() {
             val intent = Intent(this, panel::class.java)
