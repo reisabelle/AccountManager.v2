@@ -11,6 +11,12 @@ class academic_records : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_academic_records)
 
+        val back = findViewById<ImageView>(R.id.backbtn)
+        back.setOnClickListener{
+            val intent = Intent(this, home::class.java)
+            startActivity(intent)
+        }
+        
         val add = findViewById<ImageView>(R.id.addbtn)
         add.setOnClickListener{
             val intent = Intent(this, add_record::class.java)
