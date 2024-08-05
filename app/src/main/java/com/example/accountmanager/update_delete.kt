@@ -19,6 +19,12 @@ class update_delete : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_delete)
 
+        val back = findViewById<ImageView>(R.id.backbtn3)
+        back.setOnClickListener{
+            val intent = Intent(this, info::class.java)
+            startActivity(intent)
+        }
+
         accountsRef = FirebaseDatabase.getInstance().getReference("Accounts")
         val emailData = intent.getStringExtra("platform")
 
