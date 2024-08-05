@@ -9,13 +9,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class academic_records : AppCompatActivity() {
-    
-    val originalPassword = intent.getStringExtra("PASSWORD_KEY")
-    val originalEmail = intent.getStringExtra("EMAIL_KEY")
-    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_academic_records)
+
+        val originalPassword = intent.getStringExtra("PASSWORD_KEY")
+        val originalEmail = intent.getStringExtra("EMAIL_KEY")
 
         val back = findViewById<ImageView>(R.id.backbtn)
         back.setOnClickListener{
