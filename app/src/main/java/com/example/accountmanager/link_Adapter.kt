@@ -25,7 +25,8 @@ class link_Adapter(private val context: Context, private var dataSource: List<Ac
             view = inflater.inflate(R.layout.link_item, parent, false)
             holder = ViewHolder(
                 view.findViewById(R.id.platformText),
-                view.findViewById(R.id.linkText)
+                view.findViewById(R.id.linkText),
+                view.findViewById(R.id.logo)
             )
             view.tag = holder
         } else {
@@ -36,6 +37,11 @@ class link_Adapter(private val context: Context, private var dataSource: List<Ac
         val account = getItem(position) as Account_Model
         holder.platformTextView.text = account.platform
         holder.linkTextView.text = account.link
+        val platformName = account.platform.lowercase() // Ensure case-insensitivity
+        val resourceId = context.resources.getIdentifier(platformName, "drawable", context.packageName)
+        if (resourceId > 0) {
+            holder.logo.setImageResource(resourceId)
+        }
 
         return view
     }
@@ -47,6 +53,7 @@ class link_Adapter(private val context: Context, private var dataSource: List<Ac
 
     private class ViewHolder(
         val platformTextView: TextView,
-        val linkTextView: TextView
+        val linkTextView: TextView,
+        val logo: ImageView
     )
 }
