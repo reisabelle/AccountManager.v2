@@ -31,6 +31,15 @@ class panel : AppCompatActivity() {
         val profile: ImageView = findViewById(R.id.profile)
         val eMail: TextView = findViewById(R.id.email)
 
+        val button4: Button = findViewById(R.id.profilebtn)
+        button4.setBackgroundColor(Color.TRANSPARENT)
+        button4.setOnClickListener {
+            val intent = Intent(this, Profile::class.java)
+            intent.putExtra("PASSWORD_KEY", originalPassword)
+            intent.putExtra("EMAIL_KEY", originalEmail)
+            startActivity(intent)
+        }
+
         val button1: Button = findViewById(R.id.homebtn)
         button1.setBackgroundColor(Color.TRANSPARENT)
         button1.setOnClickListener {
