@@ -13,43 +13,110 @@
         android:layout_height="wrap_content"
         android:padding="15dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/platformText"
-            android:text="Platform"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/linkText"
-            android:text="Link"
-            android:textSize="25sp"
-            android:layout_below="@id/platformText"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/emailText"
-            android:text="Email"
-            android:textSize="25sp"
-            android:layout_below="@id/linkText"/>
+        <RelativeLayout
+            android:id="@+id/rl_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/phoneNoText"
-            android:text="Phone No."
-            android:textSize="25sp"
-            android:layout_below="@id/emailText"/>
+            <TextView
+                android:id="@+id/tvplatform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Platform: "
+                android:textStyle="bold"
+                android:textSize="25sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/platformText"
+                android:textSize="25sp"
+                android:layout_toEndOf="@id/tvplatform"/>
+        </RelativeLayout>
 
-        <TextView
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/rl_2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/passwordText"
-            android:text="Link"
-            android:textSize="25sp"
-            android:layout_below="@id/phoneNoText"/>
+            android:layout_below="@+id/rl_1">
+
+            <TextView
+                android:id="@+id/tvlink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Link: "
+                android:textStyle="bold"
+                android:textSize="25sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linkText"
+                android:textSize="25sp"
+                android:layout_toEndOf="@id/tvlink"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_2">
+
+            <TextView
+                android:id="@+id/tvemail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email: "
+                android:textStyle="bold"
+                android:textSize="25sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/emailText"
+                android:textSize="25sp"
+                android:layout_toEndOf="@id/tvemail"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_3">
+
+            <TextView
+                android:id="@+id/tvphone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone No.: "
+                android:textStyle="bold"
+                android:textSize="25sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/phoneNoText"
+                android:textSize="25sp"
+                android:layout_toEndOf="@id/tvphone"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_4">
+
+            <TextView
+                android:id="@+id/tvpassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password: "
+                android:textStyle="bold"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:id="@+id/passwordText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-1dp"
+                android:layout_toEndOf="@id/tvpassword"
+                android:textSize="25sp" />
+        </RelativeLayout>
 
     </RelativeLayout>
 
