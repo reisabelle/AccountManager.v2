@@ -10,5 +10,11 @@ class academic_records : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_academic_records)
+
+        val add = findViewById<ImageView>(R.id.addbtn)
+        add.setOnClickListener{
+            val intent = Intent(this, add_record::class.java)
+            startActivity(intent)
+        }
     }
 }
