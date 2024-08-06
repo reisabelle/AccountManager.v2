@@ -53,7 +53,19 @@ class academic_records : AppCompatActivity() {
             val userEmail = originalEmail
             fetchAccountsData(userEmail)
         }
+
+        listView.setOnItemClickListener { parent, view, position, id ->
+            // Handle item click here
+            val selectedAccount = adapter.getItem(position) as Records_Model
+            // Start update_delete activity and pass account data
+            val intent = Intent(this@academic_records, update_delete_record::class.java)
+            intent.putExtra("PASSWORD_KEY", originalPassword)
+            intent.putExtra("EMAIL_KEY", originalEmail)
+            intent.putExtra("subject", selectedAccount.subject)
+            startActivity(intent)
+        }
     }
+
     private fun fetchAccountsData(userEmail: String) {
         val userAccountsRef = accountsRef.orderByChild("userEmail").equalTo(userEmail)
         userAccountsRef.addValueEventListener(object : ValueEventListener {
