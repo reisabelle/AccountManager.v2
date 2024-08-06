@@ -17,6 +17,12 @@
         android:theme="@style/Theme.AccountManager"
         tools:targetApi="31">
         <activity
+            android:name=".add_record"
+            android:exported="false" />
+        <activity
+            android:name=".academic_records"
+            android:exported="false" />
+        <activity
             android:name=".Profile"
             android:exported="false" />
         <activity
