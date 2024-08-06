@@ -151,7 +151,6 @@ class Profile : AppCompatActivity() {
     private fun updateUserData() {
         val userId = auth.currentUser?.uid
         val user = auth.currentUser
-
         if (userId != null && user != null) {
             val username = usernameEditText.text.toString().trim()
             val email = emailEditText.text.toString().trim()
@@ -163,26 +162,29 @@ class Profile : AppCompatActivity() {
                 return
             }
 
-            // upadte info in db
             val userUpdates = hashMapOf<String, Any>(
                 "username" to username,
                 "email" to email,
-                "phone" to phone,
-                "password" to password 
+                "phone" to phone
             )
 
             database.child(userId).updateChildren(userUpdates).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // update pass in firebase auth
-                    user.updatePassword(password).addOnCompleteListener { authTask ->
-                        if (authTask.isSuccessful) {
-                            Toast.makeText(this, "User data and password updated successfully", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(this, "Failed to update password", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+                    Toast.makeText(this, "User data updated successfully", Toast.LENGTH_SHORT).show()
+
                 } else {
                     Toast.makeText(this, "Failed to update user data", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+
+            user.updatePassword(password).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, login::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "Failed to update password", Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
@@ -191,20 +193,30 @@ class Profile : AppCompatActivity() {
     }
 
     private fun uploadImageToFirebase(imageUri: Uri?, username: String) {
+        usernameEditText = findViewById(R.id.username)
         if (imageUri == null) {
             Toast.makeText(this, "Image URI is null", Toast.LENGTH_SHORT).show()
             return
         }
+        val username = usernameEditText.text.toString().trim()
 
         val userId = auth.currentUser?.uid ?: return
-        storageRef = storage.reference.child("profile_images/$username.jpg")
+        val fileName = "$username.jpg" // Ensure file name is unique
+        storageRef = storage.reference.child("profile_images")
+        val Ref = storageRef.child("$fileName")
 
-        storageRef.putFile(imageUri)
+        Ref.putFile(imageUri)
             .addOnSuccessListener {
-                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                Log.d("FirebaseStorage", "Image uploaded successfully")
+                Ref.downloadUrl.addOnSuccessListener { uri ->
                     val imageUrl = uri.toString()
-                    database.child(userId).child("imageUrl").setValue(imageUrl)
-                    Toast.makeText(this, "Image uploaded successfully", Toast.LENGTH_SHORT).show()
+                    database.child(userId).child("imageUrl").setValue(imageUrl).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "Image URL saved successfully", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Failed to save image URL", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
             .addOnFailureListener { e ->
@@ -227,7 +239,7 @@ class Profile : AppCompatActivity() {
                             // User successfully deleted
                             Toast.makeText(this, "User account deleted successfully", Toast.LENGTH_SHORT).show()
 
-                            // Optionally, navigate to another activity or log out
+
                             val intent = Intent(this, login::class.java)
                             startActivity(intent)
                             finish() // Close the current activity

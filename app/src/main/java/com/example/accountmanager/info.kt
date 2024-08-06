@@ -3,6 +3,8 @@ package com.example.accountmanager
 import Adapter
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +35,8 @@ class info : AppCompatActivity() {
             intent.putExtra("EMAIL_KEY", originalEmail)
             startActivity(intent)
         }
+
+        // fetch and Display data
         listView = findViewById(R.id.LV_info)
         adapter = Adapter(this, mutableListOf())
         listView.adapter = adapter
@@ -41,6 +45,19 @@ class info : AppCompatActivity() {
             val userEmail = originalEmail
             fetchAccountsData(userEmail)
         }
+
+        // click listview item
+        listView.setOnItemClickListener { parent, view, position, id ->
+            // Handle item click here
+            val selectedAccount = adapter.getItem(position) as Account_Model
+            // Start update_delete activity and pass account data
+            val intent = Intent(this@info, update_delete::class.java)
+            intent.putExtra("PASSWORD_KEY", originalPassword)
+            intent.putExtra("EMAIL_KEY", originalEmail)
+            intent.putExtra("platform", selectedAccount.platform)
+            startActivity(intent)
+        }
+
     }
     private fun fetchAccountsData(userEmail: String) {
         val userAccountsRef = accountsRef.orderByChild("userEmail").equalTo(userEmail)
