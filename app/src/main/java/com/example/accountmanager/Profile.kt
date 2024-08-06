@@ -33,16 +33,18 @@ class Profile : AppCompatActivity() {
     private lateinit var phoneEditText: EditText
     private lateinit var passwordEditText: EditText
 
-    val originalPassword = intent.getStringExtra("PASSWORD_KEY")
-    val originalEmail = intent.getStringExtra("EMAIL_KEY")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+        
+        val originalPassword = intent.getStringExtra("PASSWORD_KEY")
+        val originalEmail = intent.getStringExtra("EMAIL_KEY")
 
         val back = findViewById<ImageView>(R.id.backbtn2)
         back.setOnClickListener{
             val intent = Intent(this, panel::class.java)
+            intent.putExtra("PASSWORD_KEY", originalPassword)
+            intent.putExtra("EMAIL_KEY", originalEmail)
             startActivity(intent)
         }
 
