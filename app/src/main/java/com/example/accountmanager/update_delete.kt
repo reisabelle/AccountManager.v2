@@ -16,12 +16,13 @@ import com.google.firebase.database.ValueEventListener
 class update_delete : AppCompatActivity() {
 
     private lateinit var accountsRef: DatabaseReference
-    val originalPassword = intent.getStringExtra("PASSWORD_KEY")
-    val originalEmail = intent.getStringExtra("EMAIL_KEY")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_delete)
+
+        val originalPassword = intent.getStringExtra("PASSWORD_KEY")
+        val originalEmail = intent.getStringExtra("EMAIL_KEY")
 
         val back = findViewById<ImageView>(R.id.backbtn3)
         back.setOnClickListener{
