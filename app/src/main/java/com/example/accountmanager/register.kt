@@ -143,7 +143,7 @@ class register : AppCompatActivity() {
                                         "email" to email,
                                         "phone" to phone,
                                         "imageUrl" to imageUrl,
-                                        "isEmailVerified" to false // To track email verification status
+                                        "isEmailVerified" to true // To track email verification status
                                     )
 
                                     database.child("users").child(userId).setValue(userMap)

@@ -35,8 +35,6 @@ class panel : AppCompatActivity() {
         button4.setBackgroundColor(Color.TRANSPARENT)
         button4.setOnClickListener {
             val intent = Intent(this, Profile::class.java)
-            intent.putExtra("PASSWORD_KEY", originalPassword)
-            intent.putExtra("EMAIL_KEY", originalEmail)
             startActivity(intent)
         }
 
