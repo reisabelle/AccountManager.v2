@@ -9,15 +9,24 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tv_subject"
-            android:layout_width="152dp"
+            android:id="@+id/tv_sem"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/tv_subject"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textSize="15dp"
+            android:layout_toEndOf="@id/tv_sem"/>
 
         <TextView
             android:id="@+id/tv_grade"
-            android:layout_width="73dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:textSize="15dp"
@@ -26,7 +35,7 @@
 
         <TextView
             android:id="@+id/tv_instructor"
-            android:layout_width="152dp"
+            android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:textSize="15dp"
