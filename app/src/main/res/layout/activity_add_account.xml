@@ -42,6 +42,11 @@
             android:hint="Platform"
             android:inputType="text" />
 
+        <Spinner
+            android:id="@+id/platformSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <EditText
             android:id="@+id/link"
             android:layout_width="match_parent"

@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 class academic_records : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_academic_records)
+        setContentView(R.layout.acitvity_academic_records)
 
         val originalPassword = intent.getStringExtra("PASSWORD_KEY")
         val originalEmail = intent.getStringExtra("EMAIL_KEY")
